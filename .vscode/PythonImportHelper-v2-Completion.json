@@ -1,0 +1,164 @@
+[
+    {
+        "label": "pygame",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pygame",
+        "description": "pygame",
+        "detail": "pygame",
+        "documentation": {}
+    },
+    {
+        "label": "random",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "random",
+        "description": "random",
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "Player",
+        "kind": 6,
+        "importPath": "game",
+        "description": "game",
+        "peekOfCode": "class Player(pygame.sprite.Sprite):\n    def __init__(self):\n        super().__init__()\n        self.images = [pygame.image.load(\"IMG/pacman-open-right.png\"),pygame.image.load(\"IMG/pacman-closed-right.png\")] \n        self.current_image_index = 0\n        self.image = self.images[self.current_image_index]\n        self.rect = self.image.get_rect()\n        self.rect.center = (width//2, height - 50)\n        self.lives = 5\n        self.enter_safezone = 3",
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "Bonus",
+        "kind": 6,
+        "importPath": "game",
+        "description": "game",
+        "peekOfCode": "class Bonus(pygame.sprite.Sprite):\n    def __init__(self, x, y):\n        super().__init__()\n        self.image = pygame.image.load(\"IMG/bonus.png\")\n        self.rect = self.image.get_rect()\n        self.rect.topleft = (x, y)\n        self.x = random.choice([-1, 1])\n        self.y = random.choice([-1, 1])\n        self.speed = random.randint(1, 5)\n    def update(self):",
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "Ghost",
+        "kind": 6,
+        "importPath": "game",
+        "description": "game",
+        "peekOfCode": "class Ghost(pygame.sprite.Sprite):\n    def __init__(self, x, y, image, ghost_type):\n        super().__init__()\n        self.original_image = image \n        self.image = image \n        self.rect = self.image.get_rect()\n        self.rect.topleft = (x,y)\n        self.type = ghost_type\n        self.x = random.choice([-1, 1])\n        self.y = random.choice([-1, 1])",
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "Game",
+        "kind": 6,
+        "importPath": "game",
+        "description": "game",
+        "peekOfCode": "class Game:\n    def __init__(self, our_player, group_of_ghosts, bonus):\n        self.our_player = our_player\n        self.bonus_activated = False \n        self.bonus_activated_time = 0\n        self.bonus = bonus\n        self.group_of_ghosts = group_of_ghosts\n        self.score = 0\n        self.highest_score = 0\n        self.round_number = 0",
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "width",
+        "kind": 5,
+        "importPath": "game",
+        "description": "game",
+        "peekOfCode": "width = 1200\nheight = 700\nscreen = pygame.display.set_mode((width, height))\npygame.display.set_caption(\"Catch The Ghosts!\")\nclass Player(pygame.sprite.Sprite):\n    def __init__(self):\n        super().__init__()\n        self.images = [pygame.image.load(\"IMG/pacman-open-right.png\"),pygame.image.load(\"IMG/pacman-closed-right.png\")] \n        self.current_image_index = 0\n        self.image = self.images[self.current_image_index]",
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "height",
+        "kind": 5,
+        "importPath": "game",
+        "description": "game",
+        "peekOfCode": "height = 700\nscreen = pygame.display.set_mode((width, height))\npygame.display.set_caption(\"Catch The Ghosts!\")\nclass Player(pygame.sprite.Sprite):\n    def __init__(self):\n        super().__init__()\n        self.images = [pygame.image.load(\"IMG/pacman-open-right.png\"),pygame.image.load(\"IMG/pacman-closed-right.png\")] \n        self.current_image_index = 0\n        self.image = self.images[self.current_image_index]\n        self.rect = self.image.get_rect()",
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "screen",
+        "kind": 5,
+        "importPath": "game",
+        "description": "game",
+        "peekOfCode": "screen = pygame.display.set_mode((width, height))\npygame.display.set_caption(\"Catch The Ghosts!\")\nclass Player(pygame.sprite.Sprite):\n    def __init__(self):\n        super().__init__()\n        self.images = [pygame.image.load(\"IMG/pacman-open-right.png\"),pygame.image.load(\"IMG/pacman-closed-right.png\")] \n        self.current_image_index = 0\n        self.image = self.images[self.current_image_index]\n        self.rect = self.image.get_rect()\n        self.rect.center = (width//2, height - 50)",
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "player_group",
+        "kind": 5,
+        "importPath": "game",
+        "description": "game",
+        "peekOfCode": "player_group = pygame.sprite.Group()\none_player = Player()\nplayer_group.add(one_player)\nclass Bonus(pygame.sprite.Sprite):\n    def __init__(self, x, y):\n        super().__init__()\n        self.image = pygame.image.load(\"IMG/bonus.png\")\n        self.rect = self.image.get_rect()\n        self.rect.topleft = (x, y)\n        self.x = random.choice([-1, 1])",
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "one_player",
+        "kind": 5,
+        "importPath": "game",
+        "description": "game",
+        "peekOfCode": "one_player = Player()\nplayer_group.add(one_player)\nclass Bonus(pygame.sprite.Sprite):\n    def __init__(self, x, y):\n        super().__init__()\n        self.image = pygame.image.load(\"IMG/bonus.png\")\n        self.rect = self.image.get_rect()\n        self.rect.topleft = (x, y)\n        self.x = random.choice([-1, 1])\n        self.y = random.choice([-1, 1])",
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "ghost_group",
+        "kind": 5,
+        "importPath": "game",
+        "description": "game",
+        "peekOfCode": "ghost_group = pygame.sprite.Group()\nbonus_group = pygame.sprite.Group()\nmy_game = Game(one_player, ghost_group, bonus_group)\nmy_game.start_new_round()\nfps = 60\nclock = pygame.time.Clock()\nkontinue = True\nwhile kontinue:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:",
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "bonus_group",
+        "kind": 5,
+        "importPath": "game",
+        "description": "game",
+        "peekOfCode": "bonus_group = pygame.sprite.Group()\nmy_game = Game(one_player, ghost_group, bonus_group)\nmy_game.start_new_round()\nfps = 60\nclock = pygame.time.Clock()\nkontinue = True\nwhile kontinue:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            kontinue = False",
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "my_game",
+        "kind": 5,
+        "importPath": "game",
+        "description": "game",
+        "peekOfCode": "my_game = Game(one_player, ghost_group, bonus_group)\nmy_game.start_new_round()\nfps = 60\nclock = pygame.time.Clock()\nkontinue = True\nwhile kontinue:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            kontinue = False\n        if event.type == pygame.KEYDOWN:",
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "fps",
+        "kind": 5,
+        "importPath": "game",
+        "description": "game",
+        "peekOfCode": "fps = 60\nclock = pygame.time.Clock()\nkontinue = True\nwhile kontinue:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            kontinue = False\n        if event.type == pygame.KEYDOWN:\n            if event.key == pygame.K_SPACE:\n                   one_player.back_to_safe_zone()",
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "clock",
+        "kind": 5,
+        "importPath": "game",
+        "description": "game",
+        "peekOfCode": "clock = pygame.time.Clock()\nkontinue = True\nwhile kontinue:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            kontinue = False\n        if event.type == pygame.KEYDOWN:\n            if event.key == pygame.K_SPACE:\n                   one_player.back_to_safe_zone()\n            if event.type == pygame.KEYDOWN:",
+        "detail": "game",
+        "documentation": {}
+    },
+    {
+        "label": "kontinue",
+        "kind": 5,
+        "importPath": "game",
+        "description": "game",
+        "peekOfCode": "kontinue = True\nwhile kontinue:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            kontinue = False\n        if event.type == pygame.KEYDOWN:\n            if event.key == pygame.K_SPACE:\n                   one_player.back_to_safe_zone()\n            if event.type == pygame.KEYDOWN:\n                if (event.key == pygame.K_d) or (event.key == pygame.K_s):",
+        "detail": "game",
+        "documentation": {}
+    }
+]
