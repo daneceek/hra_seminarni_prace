@@ -89,7 +89,8 @@ class Bonus(pygame.sprite.Sprite):
 class Ghost(pygame.sprite.Sprite):
     def __init__(self, x, y, image, ghost_type):
         super().__init__()
-        self.original_image = image 
+        self.original_image = image
+        self.original_type = ghost_type 
         self.image = image 
         self.rect = self.image.get_rect()
         self.rect.topleft = (x,y)
@@ -106,9 +107,11 @@ class Ghost(pygame.sprite.Sprite):
     def update(self):
         
         if my_game.bonus_activated:
+            my_game.wanted_ghost = my_game.blue_image
             self.image = my_game.blue_image
         else:
             self.image = self.original_image
+            self.type = self.original_type
         self.rect.x += self.x * self.speed
         self.rect.y += self.y * self.speed
         
@@ -130,8 +133,8 @@ class Game:
         self.round_time = 0
         self.slowdown_cycle = 0
 
-        pygame.mixer.music.load("zvuky/bg-music-hp.wav")
-        pygame.mixer.music.play(-1)
+        # pygame.mixer.music.load("zvuky/bg-music-hp.wav")
+        # pygame.mixer.music.play(-1)
 
         self.bg_image = pygame.image.load("IMG/bg-dementors.png")
         self.bg_rect = self.bg_image.get_rect()
@@ -210,7 +213,6 @@ class Game:
                 collided_ghost.remove(self.group_of_ghosts)
                 if self.group_of_ghosts:
                     self.our_player.catch_sound.play()
-                    self.choose_new_target()
                 else:
                     self.our_player.reset()
                     self.start_new_round()
@@ -249,8 +251,10 @@ class Game:
         if time - self.bonus_activated_time >= 2000:
             bonus_text_create = self.potter_font.render("BONUS: 1", True, "green")
         if time - self.bonus_activated_time >= 3000:
-            self.bonus_activated = False
             self.choose_new_target()
+            self.draw()
+            self.bonus_activated = False
+            
         bonus_text_create_rect = bonus_text_create.get_rect()
         bonus_text_create_rect.center = (width//2, height//2)
         screen.blit(bonus_text_create, bonus_text_create_rect)
@@ -274,14 +278,13 @@ class Game:
             self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[2], 2))
             self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[3], 3))
             self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[3], 3))
-        if (self.round_number > 2) and random.randint(1, 2) == 2:
+        if (self.round_number > 2) :
             self.bonus.add(Bonus(random.randint(0, width - 64), random.randint(100, height - 164)))
         self.choose_new_target()
     def choose_new_target(self):
         new_ghost_to_catch = random.choice(self.group_of_ghosts.sprites())
         self.wanted_ghost_number = new_ghost_to_catch.type
-        self.wanted_ghost = new_ghost_to_catch.image
-    
+        self.wanted_ghost = new_ghost_to_catch.original_image
     def pause(self, main_text, highest_score_text, subheading_text):
 
         global kontinue
@@ -322,7 +325,7 @@ class Game:
         self.our_player.enter_safezone = 3
         self.start_new_round()
 
-        pygame.mixer.music.play(-1, 0.0)
+        # pygame.mixer.music.play(-1, 0.0)
 
 
 
