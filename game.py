@@ -25,24 +25,24 @@ class Player(pygame.sprite.Sprite):
         self.enter_safezone = 3
         self.speed = 8
         
-        self.catch_sound = pygame.mixer.Sound("zvuky/expecto-patronum.mp3")
+        self.catch_sound = pygame.mixer.Sound("zvuky/pacman_eatghost.wav")
         self.catch_sound.set_volume(0.1)
-        self.wrong_sound = pygame.mixer.Sound("zvuky/wrong.wav")
-        self.wrong_sound.set_volume(0.1)
+        self.wrong_sound = pygame.mixer.Sound("zvuky/pacman_wrong.mp3")
+        self.wrong_sound.set_volume(0.2)
         
         self.last_image_change_time = 0
         self.image_change_interval = 0.5
     def update(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_w] and self.rect.top > 109:
+        if (keys[pygame.K_w] or keys[pygame.K_UP] ) and self.rect.top > 109:
             self.rect.y -= self.speed
-        if keys[pygame.K_s] and self.rect.bottom < height - 109:
+        if (keys[pygame.K_s] or keys[pygame.K_DOWN] ) and self.rect.bottom < height - 109:
             self.rect.y += self.speed
-        if keys[pygame.K_a] and self.rect.left > 10:
+        if (keys[pygame.K_a] or keys[pygame.K_LEFT] ) and self.rect.left > 10:
             self.images = [pygame.image.load("IMG/pacman-open-left.png"),pygame.image.load("IMG/pacman-closed-left.png")]
             self.image = self.images[self.current_image_index]
             self.rect.x -= self.speed
-        if keys[pygame.K_d] and self.rect.right < width:
+        if (keys[pygame.K_d] or keys[pygame.K_RIGHT] ) and self.rect.right < width:
             self.images = [pygame.image.load("IMG/pacman-open-right.png"),pygame.image.load("IMG/pacman-closed-right.png")] 
             self.image = self.images[self.current_image_index]
             self.rect.x += self.speed
@@ -133,14 +133,15 @@ class Game:
         self.round_time = 0
         self.slowdown_cycle = 0
 
-        # pygame.mixer.music.load("zvuky/bg-music-hp.wav")
-        # pygame.mixer.music.play(-1)
+        pygame.mixer.music.load("zvuky/pacman_beginning.wav")
+        pygame.mixer.music.set_volume(0.05)
+        pygame.mixer.music.play(-1)
 
         self.bg_image = pygame.image.load("IMG/bg-dementors.png")
         self.bg_rect = self.bg_image.get_rect()
         self.bg_rect.topleft = (0, 0)
 
-        self.potter_font = pygame.font.Font("pismo/Harry_potter_font.ttf", 24)
+        self.ghost_font = pygame.font.Font("pismo/pacman_font.ttf", 18)
 
         self.blue_image = pygame.image.load("IMG/blue-ghost.png")
         cyan_image = pygame.image.load("IMG/cyan-ghost.png")
@@ -170,28 +171,28 @@ class Game:
         cyan = (0,255,255)
         colors = [red, cyan, pink, orange]
 
-        catch_text = self.potter_font.render("AIM:", True, "green")
+        catch_text = self.ghost_font.render("AIM:", True, "green")
         catch_text_rect = catch_text.get_rect()
         catch_text_rect.centerx = width//2
         catch_text_rect.top = 5 
 
-        score_text = self.potter_font.render(f"Score: {self.score}", True, "green")
+        score_text = self.ghost_font.render(f"Score: {self.score}", True, "green")
         score_text_rect = score_text.get_rect()
         score_text_rect.topleft = (10,4)
 
-        lives_text = self.potter_font.render(f"Lives {self.our_player.lives}", True, "green")
+        lives_text = self.ghost_font.render(f"Lives {self.our_player.lives}", True, "green")
         lives_text_rect = lives_text.get_rect()
         lives_text_rect.topleft = (10, 30)
 
-        kolo_text = self.potter_font.render(f"Kolo: {self.round_number}", True, "green")
-        kolo_text_rect = kolo_text.get_rect()
-        kolo_text_rect.topleft = (10, 60)
+        round_text = self.ghost_font.render(f"Round: {self.round_number}", True, "green")
+        round_text_rect = round_text.get_rect()
+        round_text_rect.topleft = (10, 60)
 
-        time_text = self.potter_font.render(f"Round time: {self.round_time}", True, "green")
+        time_text = self.ghost_font.render(f"Round time: {self.round_time}", True, "green")
         time_text_rect = time_text.get_rect()
         time_text_rect.topright = (width - 5, 5)
 
-        back_safe_zone_text = self.potter_font.render(f"Safe zone: {self.our_player.enter_safezone}", True, "green")
+        back_safe_zone_text = self.ghost_font.render(f"Safe zone: {self.our_player.enter_safezone}", True, "green")
         back_safe_zone_text_rect = back_safe_zone_text.get_rect()
         back_safe_zone_text_rect.topright = (width - 5, 35)
         
@@ -199,7 +200,7 @@ class Game:
         screen.blit(self.wanted_ghost, self.wanted_ghost_rect)
         screen.blit(score_text, score_text_rect)
         screen.blit(lives_text , lives_text_rect)
-        screen.blit(kolo_text, kolo_text_rect)
+        screen.blit(round_text, round_text_rect)
         screen.blit(time_text, time_text_rect)
         screen.blit(back_safe_zone_text, back_safe_zone_text_rect)
 
@@ -211,16 +212,15 @@ class Game:
             if self.bonus_activated:
                 self.score += 10 * self.round_number
                 collided_ghost.remove(self.group_of_ghosts)
-                if self.group_of_ghosts:
-                    self.our_player.catch_sound.play()
-                else:
+                self.our_player.catch_sound.play()
+                if self.group_of_ghosts == False:
                     self.our_player.reset()
                     self.start_new_round()
             elif collided_ghost.type == self.wanted_ghost_number: 
                 self.score += 10 * self.round_number
-                collided_ghost.remove(self.group_of_ghosts)
+                collided_ghost.remove(self.group_of_ghosts)  
+                self.our_player.catch_sound.play()
                 if self.group_of_ghosts:
-                    self.our_player.catch_sound.play()
                     self.choose_new_target()
                 else:
                     self.our_player.reset()
@@ -231,6 +231,10 @@ class Game:
                 self.our_player.lives -= 1
 
                 if self.our_player.lives <= 0:
+                    pygame.mixer.music.stop()
+                    death_sound = pygame.mixer.Sound("zvuky/pacman_death.wav")
+                    death_sound.set_volume(0.1)
+                    death_sound.play()
                     if self.score > self.highest_score:
                         self.highest_score = self.score
                     
@@ -245,11 +249,11 @@ class Game:
             self.bonus_activated_time = pygame.time.get_ticks()
     def cancel_bonus(self, time):
         if time - self.bonus_activated_time >= 0:
-            bonus_text_create = self.potter_font.render("BONUS: 3", True, "green")
+            bonus_text_create = self.ghost_font.render("BONUS: 3", True, "green")
         if time - self.bonus_activated_time >= 1000:
-            bonus_text_create = self.potter_font.render("BONUS: 2", True, "green")
+            bonus_text_create = self.ghost_font.render("BONUS: 2", True, "green")
         if time - self.bonus_activated_time >= 2000:
-            bonus_text_create = self.potter_font.render("BONUS: 1", True, "green")
+            bonus_text_create = self.ghost_font.render("BONUS: 1", True, "green")
         if time - self.bonus_activated_time >= 3000:
             self.choose_new_target()
             self.draw()
@@ -278,7 +282,7 @@ class Game:
             self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[2], 2))
             self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[3], 3))
             self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[3], 3))
-        if (self.round_number > 2) :
+        if (self.round_number > 2 and random.randint(1,2) == 2) :
             self.bonus.add(Bonus(random.randint(0, width - 64), random.randint(100, height - 164)))
         self.choose_new_target()
     def choose_new_target(self):
@@ -288,15 +292,15 @@ class Game:
     def pause(self, main_text, highest_score_text, subheading_text):
 
         global kontinue
-        main_text_create = self.potter_font.render(main_text, True, "green")
+        main_text_create = self.ghost_font.render(main_text, True, "green")
         main_text_create_rect = main_text_create.get_rect()
         main_text_create_rect.center = (width//2, height//2-60)
 
-        highest_score_text_create = self.potter_font.render(highest_score_text, True, "green")
+        highest_score_text_create = self.ghost_font.render(highest_score_text, True, "green")
         highest_score_text_create_rect = highest_score_text_create.get_rect()
         highest_score_text_create_rect.center = (width//2, height // 2)
         
-        subheading_text_create = self.potter_font.render(subheading_text, True, "green")
+        subheading_text_create = self.ghost_font.render(subheading_text, True, "green")
         subheading_text_create_rect = subheading_text_create.get_rect()
         subheading_text_create_rect.center = (width//2, height // 2 + 60)
 
@@ -325,7 +329,7 @@ class Game:
         self.our_player.enter_safezone = 3
         self.start_new_round()
 
-        # pygame.mixer.music.play(-1, 0.0)
+        pygame.mixer.music.play(-1, 0.0)
 
 
 
