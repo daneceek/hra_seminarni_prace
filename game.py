@@ -291,23 +291,23 @@ class Game:
         self.wanted_ghost = new_ghost_to_catch.original_image
     def pause(self, main_text, highest_score_text, subheading_text):
 
-        global kontinue
+        global play
         main_text_create = self.ghost_font.render(main_text, True, "green")
         main_text_create_rect = main_text_create.get_rect()
         main_text_create_rect.center = (width//2, height//2-60)
 
-        highest_score_text_create = self.ghost_font.render(highest_score_text, True, "green")
-        highest_score_text_create_rect = highest_score_text_create.get_rect()
-        highest_score_text_create_rect.center = (width//2, height // 2)
+        highest_score_text = self.ghost_font.render(highest_score_text, True, "green")
+        highest_score_text_rect = highest_score_text.get_rect()
+        highest_score_text_rect.center = (width//2, height // 2)
         
-        subheading_text_create = self.ghost_font.render(subheading_text, True, "green")
-        subheading_text_create_rect = subheading_text_create.get_rect()
-        subheading_text_create_rect.center = (width//2, height // 2 + 60)
+        subheading_text = self.ghost_font.render(subheading_text, True, "green")
+        subheading_text_rect = subheading_text.get_rect()
+        subheading_text_rect.center = (width//2, height // 2 + 60)
 
         screen.fill("black")
         screen.blit(main_text_create, main_text_create_rect)
-        screen.blit(subheading_text_create, subheading_text_create_rect)
-        screen.blit(highest_score_text_create, highest_score_text_create_rect)
+        screen.blit(subheading_text, subheading_text_rect)
+        screen.blit(highest_score_text, highest_score_text_rect)
         pygame.display.update()
         paused = True
         while paused:
@@ -318,7 +318,7 @@ class Game:
                         paused = False
                 if one_event.type == pygame.QUIT:
                     paused = False
-                    kontinue = False
+                    play = False
         
         
     def show_intro_screen(self):
@@ -385,11 +385,11 @@ my_game.show_intro_screen()
 
 fps = 60
 clock = pygame.time.Clock()
-kontinue = True
-while kontinue:
+play = True
+while play:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            kontinue = False
+            play = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                    one_player.back_to_safe_zone()

@@ -112,7 +112,7 @@
         "kind": 5,
         "importPath": "game",
         "description": "game",
-        "peekOfCode": "ghost_group = pygame.sprite.Group()\nbonus_group = pygame.sprite.Group()\nmy_game = Game(one_player, ghost_group, bonus_group)\nmy_game.start_new_round()\nmy_game.show_intro_screen()\nfps = 60\nclock = pygame.time.Clock()\nkontinue = True\nwhile kontinue:\n    for event in pygame.event.get():",
+        "peekOfCode": "ghost_group = pygame.sprite.Group()\nbonus_group = pygame.sprite.Group()\nmy_game = Game(one_player, ghost_group, bonus_group)\nmy_game.start_new_round()\nmy_game.show_intro_screen()\nfps = 60\nclock = pygame.time.Clock()\nplay = True\nwhile play:\n    for event in pygame.event.get():",
         "detail": "game",
         "documentation": {}
     },
@@ -121,7 +121,7 @@
         "kind": 5,
         "importPath": "game",
         "description": "game",
-        "peekOfCode": "bonus_group = pygame.sprite.Group()\nmy_game = Game(one_player, ghost_group, bonus_group)\nmy_game.start_new_round()\nmy_game.show_intro_screen()\nfps = 60\nclock = pygame.time.Clock()\nkontinue = True\nwhile kontinue:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:",
+        "peekOfCode": "bonus_group = pygame.sprite.Group()\nmy_game = Game(one_player, ghost_group, bonus_group)\nmy_game.start_new_round()\nmy_game.show_intro_screen()\nfps = 60\nclock = pygame.time.Clock()\nplay = True\nwhile play:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:",
         "detail": "game",
         "documentation": {}
     },
@@ -130,7 +130,7 @@
         "kind": 5,
         "importPath": "game",
         "description": "game",
-        "peekOfCode": "my_game = Game(one_player, ghost_group, bonus_group)\nmy_game.start_new_round()\nmy_game.show_intro_screen()\nfps = 60\nclock = pygame.time.Clock()\nkontinue = True\nwhile kontinue:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            kontinue = False",
+        "peekOfCode": "my_game = Game(one_player, ghost_group, bonus_group)\nmy_game.start_new_round()\nmy_game.show_intro_screen()\nfps = 60\nclock = pygame.time.Clock()\nplay = True\nwhile play:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            play = False",
         "detail": "game",
         "documentation": {}
     },
@@ -139,7 +139,7 @@
         "kind": 5,
         "importPath": "game",
         "description": "game",
-        "peekOfCode": "fps = 60\nclock = pygame.time.Clock()\nkontinue = True\nwhile kontinue:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            kontinue = False\n        if event.type == pygame.KEYDOWN:\n            if event.key == pygame.K_SPACE:\n                   one_player.back_to_safe_zone()",
+        "peekOfCode": "fps = 60\nclock = pygame.time.Clock()\nplay = True\nwhile play:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            play = False\n        if event.type == pygame.KEYDOWN:\n            if event.key == pygame.K_SPACE:\n                   one_player.back_to_safe_zone()",
         "detail": "game",
         "documentation": {}
     },
@@ -148,16 +148,16 @@
         "kind": 5,
         "importPath": "game",
         "description": "game",
-        "peekOfCode": "clock = pygame.time.Clock()\nkontinue = True\nwhile kontinue:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            kontinue = False\n        if event.type == pygame.KEYDOWN:\n            if event.key == pygame.K_SPACE:\n                   one_player.back_to_safe_zone()\n            if event.type == pygame.KEYDOWN:",
+        "peekOfCode": "clock = pygame.time.Clock()\nplay = True\nwhile play:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            play = False\n        if event.type == pygame.KEYDOWN:\n            if event.key == pygame.K_SPACE:\n                   one_player.back_to_safe_zone()\n            if event.type == pygame.KEYDOWN:",
         "detail": "game",
         "documentation": {}
     },
     {
-        "label": "kontinue",
+        "label": "play",
         "kind": 5,
         "importPath": "game",
         "description": "game",
-        "peekOfCode": "kontinue = True\nwhile kontinue:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            kontinue = False\n        if event.type == pygame.KEYDOWN:\n            if event.key == pygame.K_SPACE:\n                   one_player.back_to_safe_zone()\n            if event.type == pygame.KEYDOWN:\n                if (event.key == pygame.K_d) or (event.key == pygame.K_s):",
+        "peekOfCode": "play = True\nwhile play:\n    for event in pygame.event.get():\n        if event.type == pygame.QUIT:\n            play = False\n        if event.type == pygame.KEYDOWN:\n            if event.key == pygame.K_SPACE:\n                   one_player.back_to_safe_zone()\n            if event.type == pygame.KEYDOWN:\n                if (event.key == pygame.K_d) or (event.key == pygame.K_s):",
         "detail": "game",
         "documentation": {}
     }
