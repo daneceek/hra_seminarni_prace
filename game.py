@@ -34,15 +34,15 @@ class Player(pygame.sprite.Sprite):
         self.image_change_interval = 0.5
     def update(self):
         keys = pygame.key.get_pressed()
-        if (keys[pygame.K_w] or keys[pygame.K_UP] ) and self.rect.top > 109:
+        if (keys[pygame.K_w] or keys[pygame.K_UP] ) and self.rect.top > 104:
             self.rect.y -= self.speed
-        if (keys[pygame.K_s] or keys[pygame.K_DOWN] ) and self.rect.bottom < height - 109:
+        if (keys[pygame.K_s] or keys[pygame.K_DOWN] ) and self.rect.bottom < height - 104:
             self.rect.y += self.speed
-        if (keys[pygame.K_a] or keys[pygame.K_LEFT] ) and self.rect.left > 10:
+        if (keys[pygame.K_a] or keys[pygame.K_LEFT] ) and self.rect.left > 4:
             self.images = [pygame.image.load("IMG/pacman-open-left.png"),pygame.image.load("IMG/pacman-closed-left.png")]
             self.image = self.images[self.current_image_index]
             self.rect.x -= self.speed
-        if (keys[pygame.K_d] or keys[pygame.K_RIGHT] ) and self.rect.right < width:
+        if (keys[pygame.K_d] or keys[pygame.K_RIGHT] ) and self.rect.right < width - 4:
             self.images = [pygame.image.load("IMG/pacman-open-right.png"),pygame.image.load("IMG/pacman-closed-right.png")] 
             self.image = self.images[self.current_image_index]
             self.rect.x += self.speed
@@ -141,7 +141,7 @@ class Game:
         self.bg_rect = self.bg_image.get_rect()
         self.bg_rect.topleft = (0, 0)
 
-        self.ghost_font = pygame.font.Font("pismo/pacman_font.ttf", 18)
+        self.ghost_font = pygame.font.Font("pismo/pacman_font.otf", 22)
 
         self.blue_image = pygame.image.load("IMG/blue-ghost.png")
         cyan_image = pygame.image.load("IMG/cyan-ghost.png")
@@ -171,28 +171,28 @@ class Game:
         cyan = (0,255,255)
         colors = [red, cyan, pink, orange]
 
-        catch_text = self.ghost_font.render("AIM:", True, "green")
+        catch_text = self.ghost_font.render("TARGET:", True, "green")
         catch_text_rect = catch_text.get_rect()
         catch_text_rect.centerx = width//2
         catch_text_rect.top = 5 
 
-        score_text = self.ghost_font.render(f"Score: {self.score}", True, "green")
+        score_text = self.ghost_font.render(f"SCORE: {self.score}", True, "green")
         score_text_rect = score_text.get_rect()
         score_text_rect.topleft = (10,4)
 
-        lives_text = self.ghost_font.render(f"Lives {self.our_player.lives}", True, "green")
+        lives_text = self.ghost_font.render(f"LIVES: {self.our_player.lives}", True, "green")
         lives_text_rect = lives_text.get_rect()
         lives_text_rect.topleft = (10, 30)
 
-        round_text = self.ghost_font.render(f"Round: {self.round_number}", True, "green")
+        round_text = self.ghost_font.render(f"ROUND: {self.round_number}", True, "green")
         round_text_rect = round_text.get_rect()
         round_text_rect.topleft = (10, 60)
 
-        time_text = self.ghost_font.render(f"Round time: {self.round_time}", True, "green")
+        time_text = self.ghost_font.render(f"ROUND TIME: {self.round_time}", True, "green")
         time_text_rect = time_text.get_rect()
         time_text_rect.topright = (width - 5, 5)
 
-        back_safe_zone_text = self.ghost_font.render(f"Safe zone: {self.our_player.enter_safezone}", True, "green")
+        back_safe_zone_text = self.ghost_font.render(f"SAFE ZONE: {self.our_player.enter_safezone}", True, "green")
         back_safe_zone_text_rect = back_safe_zone_text.get_rect()
         back_safe_zone_text_rect.topright = (width - 5, 35)
         
@@ -238,7 +238,7 @@ class Game:
                     if self.score > self.highest_score:
                         self.highest_score = self.score
                     
-                    self.pause(f"Your score: {self.score}.", f"Highest score: {self.highest_score}.","Press enter if you want to play again.")
+                    self.pause(f"YOUR SCORE: {self.score}.", f"HIGHEST SCORE: {self.highest_score}.","PRESS ENTER IF YOU WANT TO PLAY AGAIN.")
                     self.reset_game()
                 self.our_player.reset() 
                 
@@ -321,7 +321,48 @@ class Game:
                     kontinue = False
         
         
-    
+    def show_intro_screen(self):
+        intro = True
+        while intro:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                    intro = False
+            screen.fill((0, 0, 0))
+            intro_player = pygame.image.load("IMG/pacman-open-right.png")
+            intro_player_rect = intro_player.get_rect()
+            intro_player_rect.center = (width // 2 - 175, height // 2 + 100)
+            
+            intro_ghost_red = pygame.image.load("IMG/red-ghost.png")
+            intro_ghost_red_rect = intro_ghost_red.get_rect()
+            intro_ghost_red_rect.center = (width // 2 -20, height // 2 + 100)
+            intro_ghost_cyan = pygame.image.load("IMG/cyan-ghost.png")
+            intro_ghost_cyan_rect = intro_ghost_cyan.get_rect()
+            intro_ghost_cyan_rect.center = (width // 2 +55, height // 2 + 100)
+            intro_ghost_pink = pygame.image.load("IMG/pink-ghost.png")
+            intro_ghost_pink_rect = intro_ghost_pink.get_rect()
+            intro_ghost_pink_rect.center = (width // 2 +130, height // 2 + 100)
+            intro_ghost_orange = pygame.image.load("IMG/orange-ghost.png")
+            intro_ghost_orange_rect = intro_ghost_orange.get_rect()
+            intro_ghost_orange_rect.center = (width // 2 +205, height // 2 + 100)
+            screen.blit(intro_player, intro_player_rect)
+            screen.blit(intro_ghost_red, intro_ghost_red_rect)
+            screen.blit(intro_ghost_orange, intro_ghost_orange_rect)
+            screen.blit(intro_ghost_cyan, intro_ghost_cyan_rect)
+            screen.blit(intro_ghost_pink, intro_ghost_pink_rect)
+            font = pygame.font.Font("pismo/pacman_font.otf", 48)
+            text = font.render("CATCH THE GHOSTS!", True, (255, 255, 255))
+            text_rect = text.get_rect(center=(width // 2, height // 2 - 100))
+            screen.blit(text, text_rect)
+
+            font = pygame.font.Font("pismo/pacman_font.otf", 24)
+            text = font.render("PRESS ENTER TO START", True, (255, 255, 255))
+            text_rect = text.get_rect(center=(width // 2, height // 2))
+            screen.blit(text, text_rect)
+
+            pygame.display.update()
     def reset_game(self):
         self.score = 0
         self.round_number = 0
@@ -339,7 +380,7 @@ bonus_group = pygame.sprite.Group()
 my_game = Game(one_player, ghost_group, bonus_group)
 my_game.start_new_round()
 
-
+my_game.show_intro_screen()
         
 
 fps = 60
