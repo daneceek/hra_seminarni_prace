@@ -49,7 +49,7 @@
         "kind": 6,
         "importPath": "game",
         "description": "game",
-        "peekOfCode": "class Ghost(pygame.sprite.Sprite):\n    def __init__(self, x, y, image, ghost_type):\n        super().__init__()\n        self.original_image = image\n        self.original_type = ghost_type \n        self.image = image \n        self.rect = self.image.get_rect()\n        self.rect.topleft = (x,y)\n        self.type = ghost_type\n        self.x = random.choice([-1, 1])",
+        "peekOfCode": "class Ghost(pygame.sprite.Sprite):\n    def __init__(self, x, y, image, ghost_type):\n        super().__init__()\n        self.original_image = image\n        self.original_type = ghost_type \n        self.image = image \n        self.rect = self.image.get_rect()\n        self.rect.topleft = (x,y)\n        self.type = ghost_type\n        self.speed = random.randint(1, 5)",
         "detail": "game",
         "documentation": {}
     },

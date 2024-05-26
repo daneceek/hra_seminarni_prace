@@ -46,9 +46,11 @@ class Player(pygame.sprite.Sprite):
             self.images = [pygame.image.load("IMG/pacman-open-right.png"),pygame.image.load("IMG/pacman-closed-right.png")] 
             self.image = self.images[self.current_image_index]
             self.rect.x += self.speed
-        current_time = time.time()
-        
             
+        self.last_image_change_time = 0
+        self.image_change_interval = 0.5
+        current_time = time.time()
+         
         if (current_time - self.last_image_change_time >= self.image_change_interval):
             self.current_image_index = (self.current_image_index + 1) % len(self.images)
             self.image = self.images[self.current_image_index]
@@ -96,14 +98,9 @@ class Ghost(pygame.sprite.Sprite):
         self.rect.topleft = (x,y)
 
         self.type = ghost_type
-
+        self.speed = random.randint(1, 5)
         self.x = random.choice([-1, 1])
         self.y = random.choice([-1, 1])
-
-        self.speed = random.randint(1, 5)
-
-
-
     def update(self):
         
         if my_game.bonus_activated:
