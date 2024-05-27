@@ -58,7 +58,7 @@
         "kind": 6,
         "importPath": "game",
         "description": "game",
-        "peekOfCode": "class Game:\n    def __init__(self, our_player, group_of_ghosts, bonus):\n        self.our_player = our_player\n        self.bonus_activated = False \n        self.bonus_activated_time = 0\n        self.bonus = bonus\n        self.group_of_ghosts = group_of_ghosts\n        self.score = 0\n        self.highest_score = 0\n        self.round_number = 0",
+        "peekOfCode": "class Game:\n    def __init__(self, our_player, group_of_ghosts, bonus_group):\n        self.our_player = our_player\n        self.bonus_activated = False \n        self.bonus_activated_time = 0\n        self.group_of_bonuses = bonus_group\n        self.group_of_ghosts = group_of_ghosts\n        self.score = 0\n        self.highest_score = 0\n        self.round_number = 0",
         "detail": "game",
         "documentation": {}
     },
