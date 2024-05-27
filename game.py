@@ -20,42 +20,39 @@ class Player(pygame.sprite.Sprite):
         self.image = self.images[self.current_image_index]
         self.rect = self.image.get_rect()
         self.rect.center = (width//2, height - 50)
-        
+
         self.lives = 5
         self.enter_safezone = 3
         self.speed = 8
-        
-        self.catch_sound = pygame.mixer.Sound("zvuky/pacman_eatghost.wav")
+
+        self.catch_sound = pygame.mixer.Sound("sounds/pacman_eatghost.wav")
         self.catch_sound.set_volume(0.1)
-        self.wrong_sound = pygame.mixer.Sound("zvuky/pacman_wrong.mp3")
-        self.wrong_sound.set_volume(0.2)
-        
+        self.wrong_sound = pygame.mixer.Sound("sounds/pacman_wrong.mp3")
+        self.wrong_sound.set_volume(0.1)
+
         self.last_image_change_time = 0
         self.image_change_interval = 0.5
     def update(self):
         keys = pygame.key.get_pressed()
-        if (keys[pygame.K_w] or keys[pygame.K_UP] ) and self.rect.top > 104:
+        if keys[pygame.K_w] and self.rect.top > 109:
             self.rect.y -= self.speed
-        if (keys[pygame.K_s] or keys[pygame.K_DOWN] ) and self.rect.bottom < height - 104:
+        if keys[pygame.K_s] and self.rect.bottom < height - 109:
             self.rect.y += self.speed
-        if (keys[pygame.K_a] or keys[pygame.K_LEFT] ) and self.rect.left > 4:
+        if keys[pygame.K_a] and self.rect.left > 10:
             self.images = [pygame.image.load("IMG/pacman-open-left.png"),pygame.image.load("IMG/pacman-closed-left.png")]
             self.image = self.images[self.current_image_index]
             self.rect.x -= self.speed
-        if (keys[pygame.K_d] or keys[pygame.K_RIGHT] ) and self.rect.right < width - 4:
+        if keys[pygame.K_d] and self.rect.right < width:
             self.images = [pygame.image.load("IMG/pacman-open-right.png"),pygame.image.load("IMG/pacman-closed-right.png")] 
             self.image = self.images[self.current_image_index]
             self.rect.x += self.speed
-            
-        self.last_image_change_time = 0
-        self.image_change_interval = 0.5
         current_time = time.time()
-         
+
+
         if (current_time - self.last_image_change_time >= self.image_change_interval):
             self.current_image_index = (self.current_image_index + 1) % len(self.images)
             self.image = self.images[self.current_image_index]
             self.last_image_change_time = current_time
-
 
     def back_to_safe_zone(self):
         if self.enter_safezone > 0:
@@ -117,11 +114,11 @@ class Ghost(pygame.sprite.Sprite):
         if self.rect.top <= 100 or self.rect.bottom >= height - 100:
             self.y *= -1             
 class Game:
-    def __init__(self, our_player, group_of_ghosts, bonus):
+    def __init__(self, our_player, group_of_ghosts, bonus_group):
         self.our_player = our_player
         self.bonus_activated = False 
         self.bonus_activated_time = 0
-        self.bonus = bonus
+        self.group_of_bonuses = bonus_group
         self.group_of_ghosts = group_of_ghosts
         self.score = 0
         self.highest_score = 0
@@ -130,15 +127,15 @@ class Game:
         self.round_time = 0
         self.slowdown_cycle = 0
 
-        pygame.mixer.music.load("zvuky/pacman_beginning.wav")
+        pygame.mixer.music.load("sounds/pacman_beginning.wav")
         pygame.mixer.music.set_volume(0.05)
         pygame.mixer.music.play(-1)
 
-        self.bg_image = pygame.image.load("IMG/bg-dementors.png")
+        self.bg_image = pygame.image.load("IMG/background.png")
         self.bg_rect = self.bg_image.get_rect()
         self.bg_rect.topleft = (0, 0)
 
-        self.ghost_font = pygame.font.Font("pismo/pacman_font.otf", 22)
+        self.ghost_font = pygame.font.Font("font/pacman_font.otf", 22)
 
         self.blue_image = pygame.image.load("IMG/blue-ghost.png")
         cyan_image = pygame.image.load("IMG/cyan-ghost.png")
@@ -204,7 +201,7 @@ class Game:
         pygame.draw.rect(screen, colors[self.wanted_ghost_number], (0, 100, width, height - 200), 4)
     def check_colissions(self):
         collided_ghost = pygame.sprite.spritecollideany(self.our_player, self.group_of_ghosts)
-        collided_bonus = pygame.sprite.spritecollideany(self.our_player, self.bonus)
+        collided_bonus = pygame.sprite.spritecollideany(self.our_player, self.group_of_bonuses)
         if collided_ghost:
             if self.bonus_activated:
                 self.score += 10 * self.round_number
@@ -229,7 +226,7 @@ class Game:
 
                 if self.our_player.lives <= 0:
                     pygame.mixer.music.stop()
-                    death_sound = pygame.mixer.Sound("zvuky/pacman_death.wav")
+                    death_sound = pygame.mixer.Sound("sounds/pacman_death.wav")
                     death_sound.set_volume(0.1)
                     death_sound.play()
                     if self.score > self.highest_score:
@@ -240,8 +237,10 @@ class Game:
                 self.our_player.reset() 
                 
         if collided_bonus:
-            
-            collided_bonus.remove(self.bonus)
+            eat_fruit = pygame.mixer.Sound("sounds/pacman_eatfruit.wav")
+            eat_fruit.set_volume(0.1)
+            eat_fruit.play()
+            collided_bonus.remove(self.group_of_bonuses)
             self.bonus_activated = True
             self.bonus_activated_time = pygame.time.get_ticks()
     def cancel_bonus(self, time):
@@ -271,8 +270,8 @@ class Game:
 
         for deleted_ghost in self.group_of_ghosts:
             self.group_of_ghosts.remove(deleted_ghost)
-        for deleted_bonus in self.bonus:
-            self.bonus.remove(deleted_bonus)
+        for deleted_bonus in self.group_of_bonuses:
+            self.group_of_bonuses.remove(deleted_bonus)
         for _ in range(self.round_number):
             self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[0], 0))
             self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[1], 1))
@@ -280,7 +279,7 @@ class Game:
             self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[3], 3))
             self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[3], 3))
         if (self.round_number > 2 and random.randint(1,2) == 2) :
-            self.bonus.add(Bonus(random.randint(0, width - 64), random.randint(100, height - 164)))
+            self.group_of_bonuses.add(Bonus(random.randint(0, width - 64), random.randint(100, height - 164)))
         self.choose_new_target()
     def choose_new_target(self):
         new_ghost_to_catch = random.choice(self.group_of_ghosts.sprites())
@@ -349,12 +348,12 @@ class Game:
             screen.blit(intro_ghost_orange, intro_ghost_orange_rect)
             screen.blit(intro_ghost_cyan, intro_ghost_cyan_rect)
             screen.blit(intro_ghost_pink, intro_ghost_pink_rect)
-            font = pygame.font.Font("pismo/pacman_font.otf", 48)
+            font = pygame.font.Font("font/pacman_font.otf", 48)
             text = font.render("CATCH THE GHOSTS!", True, (255, 255, 255))
             text_rect = text.get_rect(center=(width // 2, height // 2 - 100))
             screen.blit(text, text_rect)
 
-            font = pygame.font.Font("pismo/pacman_font.otf", 24)
+            font = pygame.font.Font("font/pacman_font.otf", 24)
             text = font.render("PRESS ENTER TO START", True, (255, 255, 255))
             text_rect = text.get_rect(center=(width // 2, height // 2))
             screen.blit(text, text_rect)
