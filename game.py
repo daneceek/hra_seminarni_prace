@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = (width//2, height - 50)
 
         self.lives = 5
-        self.enter_safezone = 3
+        self.enter_safezone = 2
         self.speed = 8
 
         self.catch_sound = pygame.mixer.Sound("sounds/pacman_eatghost.wav")
@@ -363,7 +363,7 @@ class Game:
         self.score = 0
         self.round_number = 0
         self.our_player.lives = 5
-        self.our_player.enter_safezone = 3
+        self.our_player.enter_safezone = 2
         self.start_new_round()
 
         pygame.mixer.music.play(-1, 0.0)

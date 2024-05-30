@@ -31,7 +31,7 @@
         "kind": 6,
         "importPath": "game",
         "description": "game",
-        "peekOfCode": "class Player(pygame.sprite.Sprite):\n    def __init__(self):\n        super().__init__()\n        self.images = [pygame.image.load(\"IMG/pacman-open-right.png\"),pygame.image.load(\"IMG/pacman-closed-right.png\")] \n        self.current_image_index = 0\n        self.image = self.images[self.current_image_index]\n        self.rect = self.image.get_rect()\n        self.rect.center = (width//2, height - 50)\n        self.lives = 5\n        self.enter_safezone = 3",
+        "peekOfCode": "class Player(pygame.sprite.Sprite):\n    def __init__(self):\n        super().__init__()\n        self.images = [pygame.image.load(\"IMG/pacman-open-right.png\"),pygame.image.load(\"IMG/pacman-closed-right.png\")] \n        self.current_image_index = 0\n        self.image = self.images[self.current_image_index]\n        self.rect = self.image.get_rect()\n        self.rect.center = (width//2, height - 50)\n        self.lives = 5\n        self.enter_safezone = 2",
         "detail": "game",
         "documentation": {}
     },
