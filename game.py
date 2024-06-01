@@ -66,25 +66,7 @@ class Player(pygame.sprite.Sprite):
 player_group = pygame.sprite.Group()
 one_player = Player()
 player_group.add(one_player)
-class Bonus(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        super().__init__()
-        self.image = pygame.image.load("IMG/bonus.png")
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
-        self.x = random.choice([-1, 1])
-        self.y = random.choice([-1, 1])
-        
-        self.speed = random.randint(1, 5)
-        
-    def update(self):
-        self.rect.x += self.x * self.speed
-        self.rect.y += self.y * self.speed
 
-        if self.rect.left <= 0 or self.rect.right >= width:
-            self.x *= -1
-        if self.rect.top <= 100 or self.rect.bottom >= height - 100:
-            self.y *= -1 
 class Ghost(pygame.sprite.Sprite):
     def __init__(self, x, y, image, ghost_type):
         super().__init__()
@@ -112,7 +94,16 @@ class Ghost(pygame.sprite.Sprite):
         if self.rect.left <= 0 or self.rect.right >= width:
             self.x *= -1
         if self.rect.top <= 100 or self.rect.bottom >= height - 100:
-            self.y *= -1             
+            self.y *= -1  
+class Bonus(Ghost):
+    def __init__(self, x, y):
+        bonus_image = pygame.image.load("IMG/bonus.png")
+        super().__init__(x, y, bonus_image, -1)
+        self.speed = random.randint(1, 5)
+        
+    def update(self):
+        super().update()
+                  
 class Game:
     def __init__(self, our_player, group_of_ghosts, bonus_group):
         self.our_player = our_player
@@ -278,7 +269,7 @@ class Game:
             self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[2], 2))
             self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[3], 3))
             self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[3], 3))
-        if (self.round_number > 2 and random.randint(1,2) == 2) :
+        if (self.round_number > 2 and random.randint(1,2) == 2):
             self.group_of_bonuses.add(Bonus(random.randint(0, width - 64), random.randint(100, height - 164)))
         self.choose_new_target()
     def choose_new_target(self):
