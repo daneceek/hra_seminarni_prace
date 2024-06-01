@@ -258,7 +258,7 @@ class Game:
         self.slowdown_cycle = 0
         self.round_number += 1
         self.our_player.enter_safezone += 1
-
+        self.last_ghost_number = random.randint(0,3)
         for deleted_ghost in self.group_of_ghosts:
             self.group_of_ghosts.remove(deleted_ghost)
         for deleted_bonus in self.group_of_bonuses:
@@ -268,7 +268,7 @@ class Game:
             self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[1], 1))
             self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[2], 2))
             self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[3], 3))
-            self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[3], 3))
+            self.group_of_ghosts.add(Ghost(random.randint(0, width - 64), random.randint(110, height - 164), self.ghost_images[self.last_ghost_number], self.last_ghost_number))
         if (self.round_number > 2 and random.randint(1,2) == 2):
             self.group_of_bonuses.add(Bonus(random.randint(0, width - 64), random.randint(100, height - 164)))
         self.choose_new_target()
